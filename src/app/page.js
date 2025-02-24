@@ -1,15 +1,17 @@
-"use client";
+"use client"
 import Link from "next/link";
 import { UserButton, useUser } from '@stackframe/stack';
 
 export default function Home() {
-    useUser({ or: 'redirect' });
+    const user = useUser({ or: 'redirect' });
+
     return (
       <div>
           <nav>
             <UserButton/>
+            Hi, {user?.displayName || 'friend'}!
         </nav>
-        <Link href="/add">+</Link>
+        <Link href="/tasks/add">+</Link>
       </div>
   );
 }
