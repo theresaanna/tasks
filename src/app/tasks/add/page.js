@@ -3,6 +3,7 @@ import { useUser } from "@stackframe/stack";
 
 export default function AddTask() {
     useUser({ or: 'redirect' });
+
     return (
         <div>
             <form>
@@ -11,5 +12,5 @@ export default function AddTask() {
                 <button type="submit">Add</button>
             </form>
         </div>
-    )
-}
+    );
+};
