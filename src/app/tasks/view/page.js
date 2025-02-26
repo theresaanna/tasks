@@ -4,10 +4,19 @@ import Link from "next/link";
 import { useUser } from "@stackframe/stack";
 
 import supabase from "../../utils/db";
+import { archiveTask } from "./form";
+import { EditForm } from "./form";
 
 export default function ViewAll() {
     const user = useUser({ or: 'redirect' });
     const [data, setData] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [activeTask, setActiveTask] = useState({});
+
+    const handleEditTask = (task) => {
+        setActiveTask(task)
+        setIsEditing(true);
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -15,7 +24,10 @@ export default function ViewAll() {
                 await supabase
                     .from('tasks')
                     .select('*')
-                    .eq('user_id', user.id);
+                    .match({
+                        'user_id': user.id,
+                        'task_isActive': true
+                    });
             if (error) {
                 console.error(error);
             } else {
@@ -30,11 +42,17 @@ export default function ViewAll() {
             {data.length === 0 ? (
                 <p>No tasks yet! Maybe <Link href="/tasks/add">add one</Link>?</p>
             ) : (
-                <ul>
-                    {data.map((task) => (
-                        <li key={task.id}>{task.task_name}</li>
-                    ))}
-                </ul>
+                <div>
+                    {isEditing && <EditForm task={activeTask} />}
+                    <ul>
+                        {data.map((task) => (
+                            <li key={task.task_id}>{task.task_name}
+                                <a onClick={() => archiveTask(task)}>Archive</a>
+                                <a onClick={() => handleEditTask(task)}>Edit</a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             )}
         </div>
     );

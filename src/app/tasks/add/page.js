@@ -1,6 +1,5 @@
 "use server"
 import { stackServerApp } from "@/stack";
-import supabase from "../../utils/db";
 import { addTask } from "./form";
 
 export default async function AddTask() {
@@ -10,6 +9,7 @@ export default async function AddTask() {
         <div>
             <form action={addTask}>
                 <input type="hidden" name="user_id" value={user.id} />
+                <input type="hidden" name="task_id" value={user.id + Date.now()} />
                 <label>Title:</label>
                 <input type="text" name="task_name" />
                 <button type="submit">Add</button>
