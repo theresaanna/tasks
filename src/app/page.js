@@ -14,6 +14,7 @@ export default function Home() {
               {user?.id}
         </nav>
         <Link href="/tasks/add">+</Link>
+        <Link href={"tasks/view"}>View all tasks</Link>
       </div>
   );
 }

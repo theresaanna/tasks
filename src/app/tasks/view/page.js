@@ -6,12 +6,16 @@ import { useUser } from "@stackframe/stack";
 import supabase from "../../utils/db";
 
 export default function ViewAll() {
-    useUser({ or: 'redirect' });
+    const user = useUser({ or: 'redirect' });
     const [data, setData] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
-            const { data, error } = await supabase.from('tasks').select('*');
+            const { data, error } =
+                await supabase
+                    .from('tasks')
+                    .select('*')
+                    .eq('user_id', user.id);
             if (error) {
                 console.error(error);
             } else {
@@ -28,7 +32,7 @@ export default function ViewAll() {
             ) : (
                 <ul>
                     {data.map((task) => (
-                        <li key={task.id}>{task.title}</li>
+                        <li key={task.id}>{task.task_name}</li>
                     ))}
                 </ul>
             )}
