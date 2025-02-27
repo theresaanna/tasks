@@ -34,13 +34,13 @@ export default async function AddTask() {
                 <fieldset>
                     <legend>Reminders: What days?</legend>
                     {weekdays.map((day) => (
-                    <div key={day}>
-                        <label htmlFor={`day_${day}`}>{day}</label>
-                        <input type="checkbox"
-                           id={`day_${day}`}
-                           name="task_frequency_daysofweek"
-                           value={day}/>
-                    </div>
+                        <div key={day}>
+                            <label htmlFor={`day_${day}`}>{day}</label>
+                            <input type="checkbox"
+                               id={`day_${day}`}
+                               name="task_frequency_daysofweek"
+                               value={day}/>
+                        </div>
                     ))}
                 </fieldset>
                 <textarea name="task_notes" defaultValue="Notes"></textarea>

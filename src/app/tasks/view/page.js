@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
-import { useUser } from "@stackframe/stack";
+import {useUser} from "@stackframe/stack";
 
 import supabase from "../../utils/db";
 import { archiveTask } from "./form";

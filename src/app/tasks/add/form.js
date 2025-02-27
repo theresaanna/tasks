@@ -2,8 +2,6 @@
 import supabase from "../../utils/db";
 
 export async function addTask(formData) {
-    console.log(formData);
-
     const { data, error } = await supabase.from('tasks').insert({
         task_name: formData.get("task_name"),
         user_id: formData.get("user_id"),
@@ -15,12 +13,12 @@ export async function addTask(formData) {
         task_repeat: formData.get("task_repeat"),
         task_notes: formData.get("task_notes"),
         task_folder: formData.get("task_folder"),
-        task_parent: formData.get("task_parent")
+        task_parent: formData.get("task_parent"),
+        task_frequency_daysofweek: formData.getAll("task_frequency_daysofweek")
     });
     if (error) {
         console.error(error);
     } else {
-        console.log(data);
         return data;
     }
 }
