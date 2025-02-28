@@ -3,20 +3,17 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import {useUser} from "@stackframe/stack";
 
-import supabase from "../../utils/db";
+import supabase from "../../utils/supabase/client";
 import { archiveTask } from "./form";
-import { EditForm } from "./form";
 
 export default function ViewAll() {
     const user = useUser({ or: 'redirect' });
     const [data, setData] = useState([]);
-    const [isEditing, setIsEditing] = useState(false);
-    const [activeTask, setActiveTask] = useState({});
-
-    const handleEditTask = (task) => {
-        setActiveTask(task)
-        setIsEditing(true);
-    }
+    const TaskWrapper = ({ task }) => {
+        return (
+            <Link href={`/tasks/edit/${encodeURIComponent(task.task_id)}`}>Edit</Link>
+        )
+    };
 
     useEffect(() => {
         async function fetchData() {
@@ -43,12 +40,12 @@ export default function ViewAll() {
                 <p>No tasks yet! Maybe <Link href="/tasks/add">add one</Link>?</p>
             ) : (
                 <div>
-                    {isEditing && <EditForm task={activeTask} />}
+
                     <ul>
                         {data.map((task) => (
                             <li key={task.task_id}>{task.task_name}
                                 <a onClick={() => archiveTask(task)}>Archive</a>
-                                <a onClick={() => handleEditTask(task)}>Edit</a>
+                                <TaskWrapper task={task} />
                             </li>
                         ))}
                     </ul>

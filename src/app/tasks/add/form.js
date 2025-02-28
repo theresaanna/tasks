@@ -1,5 +1,5 @@
 "use server"
-import supabase from "../../utils/db";
+import supabase from "../../utils/supabase/client";
 
 export async function addTask(formData) {
     const { data, error } = await supabase.from('tasks').insert({
