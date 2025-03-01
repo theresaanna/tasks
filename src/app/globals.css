@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@theme {
+:root {
   --color-lightblue: #8fbcd1;
   --color-darkblue: #4b9dc1;
   --color-lightpeach: #f9f1ed;
@@ -18,4 +18,41 @@
 body {
   font-family: Sniglet, sans-serif;
   background-color: var(--color-lightpeach);
+}
+
+nav {
+  background-color: var(--color-mediumpeach);
+  padding: 1rem;
+}
+
+.pinboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-gap: 1rem;
+  padding: 1rem;
+
+  > div {
+    height: 300px;
+  }
+}
+
+.card {
+  padding: 1rem;
+  box-shadow: 4px 3px 3px gray;
+}
+
+.newest-tasks {
+  background-color: var(--color-periwinkle);
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+.add-task {
+  background-color: var(--color-lightblue);
+}
+
+.manage-folders {
+  background-color: var(--color-pink);
 }

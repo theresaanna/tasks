@@ -33,22 +33,24 @@ export default async function Home() {
             Hi, {user?.displayName || 'friend'}!
           </nav>
 
-          <div className="newest-tasks">
-            <h2>Newest Tasks:</h2>
-              <ul>
-                  {recentTasks?.map((task) => (
-                      <li key={task.task_id}>{task.task_name}</li>
-                  ))}
-              </ul>
-          </div>
+          <div className="pinboard">
+              <div className="newest-tasks card">
+                <h2>Newest Tasks:</h2>
+                  <ul>
+                      {recentTasks?.map((task) => (
+                          <li key={task.task_id}>{task.task_name}</li>
+                      ))}
+                  </ul>
+              </div>
 
-          <div className="manage-folders">
-              <h2>Manage Folders</h2>
-          </div>
+              <div className="add-task card">
+                  <h2>Add Task</h2>
+                  <AddTask />
+              </div>
 
-          <div className="add-task">
-              <h2>Add Task</h2>
-              <AddTask />
+              <div className="manage-folders card">
+                  <h2>Manage Folders</h2>
+              </div>
           </div>
       </div>
   );

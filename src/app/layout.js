@@ -12,9 +12,7 @@ const sniglet = Sniglet({
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${sniglet.variable}`}
-      >
+      <body>
       <StackProvider app={stackServerApp}><StackTheme>
         {children}
       </StackTheme></StackProvider></body>
