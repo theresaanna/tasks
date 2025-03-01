@@ -5,7 +5,8 @@ import { stackServerApp } from "../stack";
 import "./globals.css";
 
 const sniglet = Sniglet({
-    weight: '400'
+    weight: "400",
+    subsets: ["latin"]
 });
 
 export default async function RootLayout({ children }) {
