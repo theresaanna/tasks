@@ -1,13 +1,49 @@
-import React from "react";
-import Link from "next/link";
+"use server"
 import { UserButton } from '@stackframe/stack';
 import { stackServerApp } from "@/stack";
 import { createSupabaseClient } from "@/app/utils/supabase/server";
-import AddTask from "./tasks/add/page";
+import AddTaskPartial from "@/app/form";
 
 export default async function Home() {
-    const user = await stackServerApp.getUser({ or: 'redirect' });
+    const user = await stackServerApp.getUser({or: 'redirect' });
     const supabase = await createSupabaseClient();
+
+    const addUserToDb = async (user) => {
+        console.log(user);
+        const {data, error} =
+            await supabase.from('users')
+                .insert({'user_id': user.id});
+        if (error) {
+            return error;
+        } else {
+            if (data) {
+                console.log(data);
+                return data;
+            }
+        }
+    }
+
+    const getUserFromDb = async (user) => {
+        const {data, error} =
+            await supabase.from('users')
+                .select('*')
+                .eq('user_id', user.id);
+        if (error) {
+            console.log(error);
+            return error;
+        } else {
+            console.log(data);
+            return data;
+        }
+    }
+
+    const dbUser = await getUserFromDb(user);
+    console.log(dbUser);
+
+    if (Array.isArray(dbUser) && dbUser.length === 0) {
+        const userRecord = await addUserToDb(user);
+        console.log(userRecord);
+    }
 
     const getNewestTasks = async (user) => {
         const {data, error} =
@@ -18,6 +54,7 @@ export default async function Home() {
                 .eq('task_isActive', true);
         if (error) {
             console.error(error);
+            return error;
         } else {
             const sortedDataDesc = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             return sortedDataDesc;
@@ -45,7 +82,7 @@ export default async function Home() {
 
               <div className="add-task card">
                   <h2>Add Task</h2>
-                  <AddTask />
+                  <AddTaskPartial />
               </div>
 
               <div className="manage-folders card">
