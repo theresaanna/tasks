@@ -1,35 +1,32 @@
 "use server"
 import {createSupabaseClient} from "@/app/utils/supabase/server";
 
-async function getFolders(user_id, supabase) {
+export async function getFolders(user_id) {
+    const supabase = await createSupabaseClient();
     const {data, error} =
         await supabase.from('users')
             .select('user_folders')
             .eq('user_id', user_id);
     if (error) {
         console.log(error);
+        return error;
     } else {
-        return data?.user_folders;
+        console.log('data', data)
+        return (data.length > 0 ? data[0].user_folders : []);
     }
 }
 
-export default async function addFolder(formData) {
+export async function addFolder(formData) {
     const supabase = await createSupabaseClient();
-    const folders = await getFolders(formData.get('user_id'), supabase);
-    console.log("folders", folders);
-    const foldersUpdateArray = Array.isArray(folders)
-        ? folders.push(formData.get('user_folder_name'))
-        : [formData.get('user_folder_name')];
-console.log(foldersUpdateArray);
-console.log(formData.get('user_id'));
-    const {data, error} =
+    const folders = await getFolders(formData.get('user_id'));
+    folders.push(formData.get('user_folder_name'));
+
+    const {error} =
         await supabase.from('users')
-            .update({user_folders: foldersUpdateArray})
+            .update({user_folders: folders})
             .eq('user_id', formData.get('user_id'));
     if (error) {
         console.log(error);
-    } else {
-        console.log("end of addFolder", data);
     }
 
     return formData.get('user_folder_name');

@@ -1,7 +1,6 @@
 "use server"
 import { stackServerApp } from "@/stack";
-import { createSupabaseClient } from "@/app/utils/supabase/server";
-import addFolder from "./form";
+import {addFolder, getFolders} from "./form";
 
 export async function AddFolderForm() {
     const user = await stackServerApp.getUser({or: 'redirect' });
@@ -17,21 +16,7 @@ export async function AddFolderForm() {
 
 export async function FolderList() {
     const user = await stackServerApp.getUser({or: 'redirect' });
-    const supabase = await createSupabaseClient();
-
-    const getFolders = async (user) => {
-        const {data, error} =
-            await supabase.from('users')
-                .select('user_folders')
-                .eq('user_id', user.id);
-        if (error) {
-            return error;
-        } else {
-            return data;
-        }
-    }
-
-    const folders = await getFolders(user);
+    const folders = await getFolders(user.id);
 
     if (folders.length === 0) {
         return null;
@@ -39,7 +24,7 @@ export async function FolderList() {
         return (
             <div>
                 {folders.map((folder) => (
-                    <li key={folder.name}>{folder.name}</li>
+                    <li key={folder}>{folder}</li>
                 ))}
             </div>
         )
