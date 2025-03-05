@@ -3,6 +3,7 @@ import { UserButton } from '@stackframe/stack';
 import { stackServerApp } from "@/stack";
 import { createSupabaseClient } from "@/app/utils/supabase/server";
 import AddTaskPartial from "@/app/form";
+import {AddFolderForm,FolderList} from "@/app/users/add/[user_id]/folders/page";
 
 export default async function Home() {
     const user = await stackServerApp.getUser({or: 'redirect' });
@@ -17,7 +18,6 @@ export default async function Home() {
             return error;
         } else {
             if (data) {
-                console.log(data);
                 return data;
             }
         }
@@ -29,20 +29,16 @@ export default async function Home() {
                 .select('*')
                 .eq('user_id', user.id);
         if (error) {
-            console.log(error);
             return error;
         } else {
-            console.log(data);
             return data;
         }
     }
 
     const dbUser = await getUserFromDb(user);
-    console.log(dbUser);
 
     if (Array.isArray(dbUser) && dbUser.length === 0) {
         const userRecord = await addUserToDb(user);
-        console.log(userRecord);
     }
 
     const getNewestTasks = async (user) => {
@@ -87,6 +83,10 @@ export default async function Home() {
 
               <div className="manage-folders card">
                   <h2>Manage Folders</h2>
+                  <AddFolderForm />
+                  <ul>
+                    <FolderList user_id={user.id} />
+                  </ul>
               </div>
           </div>
       </div>
