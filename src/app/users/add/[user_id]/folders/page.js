@@ -24,7 +24,7 @@ export async function FolderList() {
         return (
             <div>
                 {folders.map((folder) => (
-                    <li key={folder}>{folder}</li>
+                    <li key={folder+Math.random()}>{folder}</li>
                 ))}
             </div>
         )

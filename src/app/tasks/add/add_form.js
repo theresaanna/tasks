@@ -38,7 +38,6 @@ export default function AddFormInner(user) {
                 ))}
             </fieldset>
             <textarea name="task_notes" defaultValue="Notes"></textarea>
-            <input type="text" name="task_folder"/>
             <label htmlFor="task_folder">Folder</label>
             <select name="task_folder"></select>
             <select name="task_parent"></select>

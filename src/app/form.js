@@ -1,60 +1,80 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "motion/react"
 import * as motion from "motion/react-client";
 import AddFormInner from "./tasks/add/add_form";
 
-export default function AddTaskPartial() {
-    const [formData, setFormData] = useState({
-        task_name: "",
-        task_repeat: false
-    });
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const Modal = ({ children }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        const handleSubmitClick = (e) => {
-            e.preventDefault();
-            setFormData({
-                task_name: formData.task_name,
-                task_repeat: formData.task_repeat
-            });
-            setIsModalOpen(true);
-        }
+    const modalVariants = {
+        hidden: {
+            opacity: 0,
+            scale: 0.8,
+        },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                duration: 0.3,
+                ease: 'easeOut',
+            },
+        },
+        exit: {
+            opacity: 0,
+            scale: 0.8,
+            transition: {
+                duration: 0.2,
+            },
+        },
+    };
 
-        const form = document.getElementById("partial_form");
-        form?.addEventListener('submit', handleSubmitClick);
-
-        return () => {
-            form?.removeEventListener('submit', handleSubmitClick);
-        };
-    });
-
+    const backdropVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 0.5 },
+    };
     return (
-        <div>
+        <>
+            <form id="partial_form">
+                <input type="text" name="task_name" defaultValue="Title"/>
+                <label htmlFor="task_repeat">Should this task repeat?</label>
+                <input type="radio" name="task_repeat" value="yes"/><label htmlFor="task_repeat">Yes</label>
+                <input type="radio" name="task_repeat" value="no" defaultChecked/><label htmlFor="task_repeat">No</label>
+                <button type="button" value="Continue" onClick={() => setIsOpen(true)}>Continue</button>
+            </form>
             <AnimatePresence>
+                {isOpen && (
+                    <>
+                        {/* Backdrop */}
                         <motion.div
-                            className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full"
+                            className="fixed inset-0 bg-black z-40"
+                            variants={backdropVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                            onClick={() => setIsOpen(false)}
+                        />
+
+                        {/* Modal Content */}
+                        <motion.div
+                            variants={modalVariants}
+                            initial="hidden"
                             animate="visible"
                             exit="exit"
-                            onClick={(e) => e.stopPropagation()}
+                            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            bg-white p-6 rounded-lg shadow-lg z-50 max-w-md w-full"
                         >
-                            {isModalOpen === false && (
-                                <form id="partial_form">
-                                    <input type="text" name="task_name" defaultValue="Title"/>
-                                    <label htmlFor="task_repeat">Should this task repeat?</label>
-                                    <input type="radio" name="task_repeat" value="yes"/><label htmlFor="task_repeat">Yes</label>
-                                    <input type="radio" name="task_repeat" value="no" defaultChecked/><label htmlFor="task_repeat">No</label>
-                                    <input type="submit" value="Continue" id="submit_button" />
-                                </form>
-                            )}
-
-                            {isModalOpen && (
-                                <form>
-                                    <AddFormInner />
-                                </form>
-                            )}
+                            <AddFormInner/>
                         </motion.div>
+                    </>
+                )}
             </AnimatePresence>
-        </div>
+        </>
+    );
+}
+
+export default function AddTaskPartial() {
+    return (
+        <Modal></Modal>
     )
 }
