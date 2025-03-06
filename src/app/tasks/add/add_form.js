@@ -1,4 +1,6 @@
 export default function AddFormInner(user) {
+    // I don't know why user sometimes comes in nested
+    const userId = JSON.stringify(user.user.id);
     const weekdays = [
         'Monday',
         'Tuesday',
@@ -8,11 +10,10 @@ export default function AddFormInner(user) {
         'Saturday',
         'Sunday'
     ];
-
     return (
         <div>
-            <input type="hidden" name="user_id" value={user.id}/>
-            <input type="hidden" name="task_id" value={user.id + Date.now()}/>
+            <input type="hidden" name="user_id" value={userId}/>
+            <input type="hidden" name="task_id" value={userId + Date.now()}/>
             <input type="text" name="task_name" defaultValue="Title"/>
             <label htmlFor="task_repeat">Should this task repeat?</label>
             <input type="radio" name="task_repeat" value="yes"/><label htmlFor="task_repeat">Yes</label>

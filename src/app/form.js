@@ -3,9 +3,11 @@ import { useState } from "react";
 import { AnimatePresence } from "motion/react"
 import * as motion from "motion/react-client";
 import AddFormInner from "./tasks/add/add_form";
+import { useUser } from "@stackframe/stack";
 
-const Modal = ({ children }) => {
+const Modal = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const user = useUser({ or: 'redirect' });
 
     const modalVariants = {
         hidden: {
@@ -64,7 +66,7 @@ const Modal = ({ children }) => {
                             className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
             bg-white p-6 rounded-lg shadow-lg z-50 max-w-md w-full"
                         >
-                            <AddFormInner/>
+                            <AddFormInner user={user} />
                         </motion.div>
                     </>
                 )}
