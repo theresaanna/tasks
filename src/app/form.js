@@ -4,6 +4,7 @@ import { AnimatePresence } from "motion/react"
 import * as motion from "motion/react-client";
 import AddFormInner from "./tasks/add/add_form";
 import { useUser } from "@stackframe/stack";
+import { addTask } from './tasks/add/form';
 
 const Modal = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -35,6 +36,17 @@ const Modal = () => {
         hidden: { opacity: 0 },
         visible: { opacity: 0.5 },
     };
+
+    const handleContinueClick = () => {
+        setIsOpen(true);
+    }
+
+    const handleTaskAdd = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget.parentElement);
+        return addTask(formData);
+    }
+
     return (
         <>
             <form id="partial_form">
@@ -42,7 +54,7 @@ const Modal = () => {
                 <label htmlFor="task_repeat">Should this task repeat?</label>
                 <input type="radio" name="task_repeat" value="yes"/><label htmlFor="task_repeat">Yes</label>
                 <input type="radio" name="task_repeat" value="no" defaultChecked/><label htmlFor="task_repeat">No</label>
-                <button type="button" value="Continue" onClick={() => setIsOpen(true)}>Continue</button>
+                <button type="button" value="Continue" onClick={handleContinueClick}>Continue</button>
             </form>
             <AnimatePresence>
                 {isOpen && (
@@ -66,7 +78,10 @@ const Modal = () => {
                             className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
             bg-white p-6 rounded-lg shadow-lg z-50 max-w-md w-full"
                         >
-                            <AddFormInner user={user} />
+                            <form>
+                                <AddFormInner user={user} />
+                                <button type="submit" onClick={handleTaskAdd}>Add</button>
+                            </form>
                         </motion.div>
                     </>
                 )}

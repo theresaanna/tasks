@@ -10,6 +10,7 @@ export default async function AddTask() {
         <div>
             <form action={addTask}>
                 <AddFormInner user={user} />
+                <button type="submit">Add</button>
             </form>
         </div>
     );

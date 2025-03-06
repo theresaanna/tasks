@@ -1,6 +1,6 @@
 export default function AddFormInner(user) {
     // I don't know why user sometimes comes in nested
-    const userId = JSON.stringify(user.user.id);
+    const userId = (JSON.stringify(user.user.id) || user.id);
     const weekdays = [
         'Monday',
         'Tuesday',
@@ -42,7 +42,6 @@ export default function AddFormInner(user) {
             <label htmlFor="task_folder">Folder</label>
             <select name="task_folder"></select>
             <select name="task_parent"></select>
-            <button type="submit">Add</button>
         </div>
     )
 }
