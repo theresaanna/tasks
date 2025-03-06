@@ -1,6 +1,6 @@
 export default function AddFormInner(user) {
     // I don't know why user sometimes comes in nested
-    const userId = (JSON.stringify(user.user.id) || user.id);
+    const userId = (user.user.id || user.id);
     const weekdays = [
         'Monday',
         'Tuesday',

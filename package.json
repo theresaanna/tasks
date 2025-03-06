@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@stackframe/stack": "^2.7.18",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "cypress": "^14.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8",
