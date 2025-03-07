@@ -4,7 +4,11 @@ export default function NewestTasks(taskList) {
     const tasks = (taskList.tasks || taskList);
     const formatDate = (date) => {
         const taskDate = new Date(date);
-        return taskDate.toLocaleDateString();
+        const formatter = new Intl.DateTimeFormat('en-US', {
+            dateStyle: "short",
+            timeStyle: "short"
+        });
+        return formatter.format(taskDate);
     }
     return (
         <ul>
