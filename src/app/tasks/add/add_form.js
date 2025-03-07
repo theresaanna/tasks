@@ -1,6 +1,7 @@
-export default function AddFormInner(user) {
+"use client"
+export default function AddFormInner({ user, addFormData }) {
     // I don't know why user sometimes comes in nested
-    const userId = (user.user.id || user.id);
+    const userId = (user.user?.id || user.id);
     const weekdays = [
         'Monday',
         'Tuesday',
@@ -10,12 +11,13 @@ export default function AddFormInner(user) {
         'Saturday',
         'Sunday'
     ];
+
     return (
         <div>
             <input type="hidden" name="user_id" value={userId}/>
             <input type="hidden" name="task_id" value={userId + Date.now()}/>
-            <input type="text" name="task_name" defaultValue="Title"/>
-            <input type="datetime-local" name="task_due_date" defaultValue="Date"/>
+            <input type="text" name="task_name" defaultValue={addFormData?.get("task_name") || "Title"}/>
+            <input type="datetime-local" name="task_due_date" defaultValue={addFormData?.get("task_due_date") || "Date"}/>
             <label htmlFor="task_repeat">Should this task repeat?</label>
             <input type="radio" name="task_repeat" value="yes"/><label htmlFor="task_repeat">Yes</label>
             <input type="radio" name="task_repeat" value="no" defaultChecked/><label htmlFor="task_repeat">No</label>

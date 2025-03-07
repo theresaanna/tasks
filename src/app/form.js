@@ -8,6 +8,7 @@ import { addTask } from './tasks/add/form';
 
 const Modal = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [addFormData, setAddFormData] = useState(new FormData());
     const user = useUser({ or: 'redirect' });
 
     const modalVariants = {
@@ -37,7 +38,9 @@ const Modal = () => {
         visible: { opacity: 0.5 },
     };
 
-    const handleContinueClick = () => {
+    const handleContinueClick = (e) => {
+        const formData = new FormData(e.target.parentElement);
+        setAddFormData(formData);
         setIsOpen(true);
     }
 
@@ -49,14 +52,13 @@ const Modal = () => {
 
     return (
         <>
-            <form id="partial_form">
-                <input type="text" name="task_name" defaultValue="Title"/>
-                <input type="datetime-local" name="task_due_date" defaultValue="Date"/>
-                <label htmlFor="task_repeat">Should this task repeat?</label>
-                <input type="radio" name="task_repeat" value="yes"/><label htmlFor="task_repeat">Yes</label>
-                <input type="radio" name="task_repeat" value="no" defaultChecked/><label htmlFor="task_repeat">No</label>
-                <button type="button" value="Continue" onClick={handleContinueClick}>Continue</button>
-            </form>
+            {!isOpen && (
+                <form id="partial_form">
+                    <input type="text" name="task_name" defaultValue="Title"/>
+                    <input type="datetime-local" name="task_due_date" defaultValue="Date"/>
+                    <button type="button" value="Continue" onClick={handleContinueClick}>Continue</button>
+                </form>
+                )}
             <AnimatePresence>
                 {isOpen && (
                     <>
@@ -79,10 +81,12 @@ const Modal = () => {
                             className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
             bg-white p-6 rounded-lg shadow-lg z-50 max-w-md w-full"
                         >
-                            <form>
-                                <AddFormInner user={user} />
-                                <button type="submit" onClick={handleTaskAdd}>Add</button>
-                            </form>
+                            {isOpen && (
+                                <form>
+                                    <AddFormInner user={user} addFormData={addFormData} />
+                                    <button type="submit" onClick={handleTaskAdd}>Add</button>
+                                </form>
+                            )}
                         </motion.div>
                     </>
                 )}
