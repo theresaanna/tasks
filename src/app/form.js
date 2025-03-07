@@ -51,6 +51,7 @@ const Modal = () => {
         <>
             <form id="partial_form">
                 <input type="text" name="task_name" defaultValue="Title"/>
+                <input type="datetime-local" name="task_due_date" defaultValue="Date"/>
                 <label htmlFor="task_repeat">Should this task repeat?</label>
                 <input type="radio" name="task_repeat" value="yes"/><label htmlFor="task_repeat">Yes</label>
                 <input type="radio" name="task_repeat" value="no" defaultChecked/><label htmlFor="task_repeat">No</label>

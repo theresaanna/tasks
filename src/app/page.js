@@ -4,6 +4,7 @@ import { stackServerApp } from "@/stack";
 import { createSupabaseClient } from "@/app/utils/supabase/server";
 import AddTaskPartial from "@/app/form";
 import {AddFolderForm,FolderList} from "@/app/users/add/[user_id]/folders/page";
+import NewestTasks from "@/app/newest_tasks";
 
 export default async function Home() {
     const user = await stackServerApp.getUser({or: 'redirect' });
@@ -68,12 +69,8 @@ export default async function Home() {
 
           <div className="pinboard">
               <div className="newest-tasks card">
-                <h2>Newest Tasks:</h2>
-                  <ul>
-                      {recentTasks?.map((task) => (
-                          <li key={task.task_id}>{task.task_name}</li>
-                      ))}
-                  </ul>
+                  <h2>Newest Tasks:</h2>
+                  <NewestTasks tasks={recentTasks} />
               </div>
 
               <div className="add-task card">

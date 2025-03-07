@@ -14,7 +14,8 @@ export async function addTask(formData) {
         task_notes: formData.get("task_notes"),
         task_folder: formData.get("task_folder"),
         task_parent: formData.get("task_parent"),
-        task_frequency_daysofweek: formData.getAll("task_frequency_daysofweek")
+        task_frequency_daysofweek: formData.getAll("task_frequency_daysofweek"),
+        task_due_date: formData.get("task_due_date")
     });
     if (error) {
         console.error(error);
