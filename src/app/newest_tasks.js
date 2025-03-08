@@ -1,25 +1,22 @@
 "use client"
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import formatDate from './utils/random';
+import { formatDate, truncateList } from './utils/random';
+import path from './path';
 
 export default function NewestTasks(taskListArr) {
     const [hasMore, setHasMore] = useState(false);
-    const [taskList, setTaskList] = useState([]);
+    const [taskList, setTaskList] = useState(taskListArr.tasks || taskListArr);
 
     useEffect(() => {
-        const truncateList = (list, maxLength) => {
-            if (list.length <= maxLength) {
-                return list;
-            }
-            setHasMore(true);
-            return list.slice(0, maxLength);
-        };
-
         const maxLength = 7;
         const tasks = truncateList((taskListArr.tasks || taskListArr), maxLength);
         setTaskList(tasks);
-    }, []);
+        if (tasks.length > 6) {
+            setHasMore(true);
+        }
+        path();
+    }, [taskListArr]);
 
     return (
         <>
