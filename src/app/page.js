@@ -5,6 +5,7 @@ import { createSupabaseClient } from "@/app/utils/supabase/server";
 import AddTaskPartial from "@/app/form";
 import {AddFolderForm,FolderList} from "@/app/users/add/[user_id]/folders/page";
 import NewestTasks from "@/app/newest_tasks";
+import NextDue from "./next_due";
 
 export default async function Home() {
     const user = await stackServerApp.getUser({or: 'redirect' });
@@ -42,7 +43,7 @@ export default async function Home() {
         const userRecord = await addUserToDb(user);
     }
 
-    const getNewestTasks = async (user) => {
+    const getTasks = async (user, operation) => {
         const {data, error} =
             await supabase
                 .from('tasks')
@@ -53,12 +54,30 @@ export default async function Home() {
             console.error(error);
             return error;
         } else {
-            const sortedDataDesc = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            return sortedDataDesc;
+            if (operation?.dataArrangement === 'sort') {
+                const sortedData = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                return sortedData;
+            }
+            else if (operation?.dataArrangement === 'next-due') {
+                const sortedData = data.sort((a, b) => {
+                    if (a.task_due_date !== null && b.task_due_date !== null) {
+                        return new Date(a.task_due_date) - new Date(b.task_due_date)
+                    } else {
+                        return -1;
+                    }
+                });
+                return sortedData;
+            }
         }
     }
 
-    const recentTasks = await getNewestTasks(user);
+    const recentTasks = await getTasks(user, {
+        dataArrangement: 'sort'
+    });
+
+    const nextDueTasks = await getTasks(user, {
+        dataArrangement: 'next-due'
+    });
 
     return (
       <div>
@@ -84,6 +103,11 @@ export default async function Home() {
                   <ul>
                     <FolderList user_id={user.id} />
                   </ul>
+              </div>
+
+              <div className="due-next card">
+                  <h2>Next Due</h2>
+                  <NextDue tasks={nextDueTasks} />
               </div>
           </div>
       </div>

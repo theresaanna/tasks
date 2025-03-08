@@ -56,3 +56,7 @@ h2 {
 .manage-folders {
   background-color: var(--color-pink);
 }
+
+.due-next {
+  background-color: var(--color-lightgreen);
+}

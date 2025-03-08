@@ -1,6 +1,7 @@
 "use client"
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import formatDate from './utils/random';
 
 export default function NewestTasks(taskListArr) {
     const [hasMore, setHasMore] = useState(false);
@@ -19,15 +20,6 @@ export default function NewestTasks(taskListArr) {
         const tasks = truncateList((taskListArr.tasks || taskListArr), maxLength);
         setTaskList(tasks);
     }, []);
-
-    const formatDate = (date) => {
-        const taskDate = new Date(date);
-        const formatter = new Intl.DateTimeFormat('en-US', {
-            dateStyle: "short",
-            timeStyle: "short"
-        });
-        return formatter.format(taskDate);
-    }
 
     return (
         <>

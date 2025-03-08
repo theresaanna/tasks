@@ -12,7 +12,6 @@ export async function getFolders(user_id) {
         console.log(error);
         return error;
     } else {
-        console.log('data', data)
         return (data.length > 0 ? data[0].user_folders : []);
     }
 }
