@@ -1,5 +1,6 @@
 "use server"
 import {createSupabaseClient} from "@/app/utils/supabase/server";
+import {revalidatePath} from "next/cache";
 
 export async function getFolders(user_id) {
     const supabase = await createSupabaseClient();
@@ -28,6 +29,6 @@ export async function addFolder(formData) {
     if (error) {
         console.log(error);
     }
-
+    revalidatePath('/');
     return formData.get('user_folder_name');
 }
