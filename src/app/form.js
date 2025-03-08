@@ -5,6 +5,7 @@ import * as motion from "motion/react-client";
 import AddFormInner from "./tasks/add/add_form";
 import { useUser } from "@stackframe/stack";
 import { addTask } from './tasks/add/form';
+import path from "./path";
 
 const Modal = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +48,9 @@ const Modal = () => {
     const handleTaskAdd = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget.parentElement);
-        return addTask(formData);
+        addTask(formData);
+        setIsOpen(false);
+        path();
     }
 
     return (
@@ -78,7 +81,7 @@ const Modal = () => {
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                            className="fixed top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2
             bg-white p-6 rounded-lg shadow-lg z-50 max-w-md w-full"
                         >
                             {isOpen && (
