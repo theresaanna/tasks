@@ -1,6 +1,7 @@
 "use server"
 import { stackServerApp } from "@/stack";
 import {addFolder, getFolders} from "./form";
+import Link from "next/link";
 
 export async function AddFolderForm() {
     const user = await stackServerApp.getUser({or: 'redirect' });
@@ -26,6 +27,11 @@ export async function FolderList() {
                 {folders.map((folder) => (
                     <li key={folder+Math.random()}>{folder}</li>
                 ))}
+                {folders.length > 6 && (
+                    <div className="more-button">
+                        <Link href="/tasks">More Folders</Link>
+                    </div>
+                )}
             </div>
         )
     }

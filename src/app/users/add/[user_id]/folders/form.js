@@ -1,6 +1,7 @@
 "use server"
 import {createSupabaseClient} from "@/app/utils/supabase/server";
 import {revalidatePath} from "next/cache";
+import {truncateList} from "@/app/utils/random";
 
 export async function getFolders(user_id) {
     const supabase = await createSupabaseClient();
@@ -12,7 +13,7 @@ export async function getFolders(user_id) {
         console.log(error);
         return error;
     } else {
-        return (data.length > 0 ? data[0].user_folders : []);
+        return (data.length > 0 ? truncateList(data[0].user_folders, 7) : []);
     }
 }
 
